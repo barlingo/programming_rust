@@ -23,6 +23,14 @@ fn ecape_time(c: Complex<f64>, limit: u64) -> Option<u64> {
     None
 }
 
+/// Parse the string 's' as a coordinate pair, like 600x400 or 1.0,1.25
+/// Spceifically 's' should have the form <left><sep><right> where <sep>
+/// is the character given by the separator  argument, and 'left' and 'right'
+/// are both strings that can be parsed by 'T::from_str', 'separator' must be
+/// ASCII character.
+///
+/// if 's' has the proper form, return 'Some(x,y)'. If it doesn't parse correctly
+/// return 'None'.
 fn parse_pair<T: FromStr>(s: &str, separator: char) -> Option<(T, T)> {
     match s.trim().find(separator) {
         None => None,
@@ -33,7 +41,9 @@ fn parse_pair<T: FromStr>(s: &str, separator: char) -> Option<(T, T)> {
     }
 }
 
+/// Parse pair of floating point numbers separated by a comma as a complex number
 fn parse_complex(s: &str) -> Option<Complex<f64>> {
+    // Better implementation
     parse_pair::<f64>(s, ',').map(|(re, im)| Complex { re, im })
     // match parse_pair(s, ',') {
     //     Some((re, im)) => Some(Complex { re, im }),
